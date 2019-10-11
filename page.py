@@ -13,27 +13,25 @@ class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
 
+    def get_page_title(self):
+        return self.driver.title
 
 class AdminLoginPage(BasePage):
     user_name = UserNameTextElement()
     password = PasswordTextElement()
 
-    def is_title_matches(self):
-        return "Login" in self.driver.title
-
     def click_login_button(self):
         element = self.driver.find_element(*AdminLoginPageLocators.LOGIN_BUTTON)
         element.click()
 
-    def is_login_failed(self):
+    def get_invalid_login_alert_message(self):
         element = self.driver.find_element(*AdminLoginPageLocators.LOGIN_RESULT_ALERT_TEXT)
-        return element.text == "Invalid Login Credentials"
+        return element.text
 
-    def is_login_email_format_invalid(self):
+    def get_invalid_email_format_alert_message(self):
         element = self.driver.find_element(*AdminLoginPageLocators.LOGIN_RESULT_ALERT_TEXT)
-        return element.text == "The Email field must contain a valid email address."
+        return element.text
 
 
 class AdminPage(BasePage):
-    def is_title_matches(self):
-        return "Dashboard" in self.driver.title
+    pass
