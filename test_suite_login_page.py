@@ -4,19 +4,54 @@ import unittest
 from selenium import webdriver
 import page
 import time
+import os
+
+#Must provide appropriate path to Chrome driver or other driver if they are not located in your system's environment path.  Yours maybe differ from the following:
+path = os.path.dirname(__file__) + "/usr/local/bin/chromedriver"
 
 class AdminLogin(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        #self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(path)
         self.driver.implicitly_wait(10)
         self.driver.get("https://www.phptravels.net/admin")
 
-    def test_login_invalid_credential(self):
+    def test_login_invalid_password(self):
 
         admin_login_page = page.AdminLoginPage(self.driver)
         self.login_helper(admin_login_page, "admin@phptravels.com", "badpassword", 2)
         self.assertEqual(admin_login_page.get_invalid_login_alert_message(), "Invalid Login Credentials")
+
+    def test_login_empty_username_and_password(self):
+
+        admin_login_page = page.AdminLoginPage(self.driver)
+        self.login_helper(admin_login_page, "", "", 2)
+        self.assertEqual(admin_login_page.get_page_title(), "Administator Login")
+
+    def test_login_invalid_username(self):
+
+        admin_login_page = page.AdminLoginPage(self.driver)
+        self.login_helper(admin_login_page, "invalid@test.com", "demoadmin", 2)
+        self.assertEqual(admin_login_page.get_page_title(), "Administator Login")
+
+    def test_login_invalid_username_and_password(self):
+
+        admin_login_page = page.AdminLoginPage(self.driver)
+        self.login_helper(admin_login_page, "invalid@test.com", "badpassword", 2)
+        self.assertEqual(admin_login_page.get_page_title(), "Administator Login")
+
+    def test_login_empty_username(self):
+
+        admin_login_page = page.AdminLoginPage(self.driver)
+        self.login_helper(admin_login_page, "", "demoadmin", 2)
+        self.assertEqual(admin_login_page.get_page_title(), "Administator Login")      
+
+    def test_login_empty_password(self):
+
+        admin_login_page = page.AdminLoginPage(self.driver)
+        self.login_helper(admin_login_page, "admin@phptravels.com", "", 2)
+        self.assertEqual(admin_login_page.get_page_title(), "Administator Login")     
 
     def test_login_invalid_email_format(self):
 

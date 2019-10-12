@@ -5,7 +5,7 @@ This Python project demonstrates using selenium to automate end-to-end testing o
 <p>
 <ul>
   <li>
-    NOTE: Python is already installed in your system
+    NOTE: Python is already installed in your system.  Also must provide appropriate path to Chrome driver or other driver if they are not located in your system's environment path.  See top few lines of "test_suite_login_page.py" file.
   </li>
   <li>
     Clone this project to your computer with GIT.
